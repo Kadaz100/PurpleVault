@@ -1,0 +1,10 @@
+# .gitignore
+.env
+.env.local
+.env.production
+.env.development
+
+# Other common ignores
+node_modules/
+build/
+dist/

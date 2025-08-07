@@ -1,0 +1,11 @@
+.circle-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+.text-gradient-solana {
+  background: linear-gradient(to right, #00FFA3, #DC1FFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

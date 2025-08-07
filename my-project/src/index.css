@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000; /* Full black background */
+  color: #ffffff; /* Default text color */
+}
+
+/* Box sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* ------------------------------------ */
+/* ✅ Solana Wallet Adapter Button Fix  */
+/* ------------------------------------ */
+.wallet-adapter-button {
+  @apply !bg-black !text-white !border !border-purple-500 
+         !rounded !px-4 !py-2 
+         !transition-all !duration-200 !ease-in-out 
+         hover:!bg-purple-700 hover:!text-white 
+         focus:!bg-purple-700 focus:!text-white 
+         active:!bg-purple-800 active:!text-white 
+         font-semibold;
+}
+
+/* Optional: If you want to customize the spinner or dropdown inside the button */
+.wallet-adapter-dropdown {
+  @apply !bg-black !text-white !border !border-purple-500;
+}
