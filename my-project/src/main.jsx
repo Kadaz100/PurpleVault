@@ -8,9 +8,11 @@ import {
   ConnectionProvider,
   WalletProvider
 } from "@solana/wallet-adapter-react";
+
 import {
   WalletModalProvider
 } from "@solana/wallet-adapter-react-ui";
+
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter
@@ -18,7 +20,9 @@ import {
 
 import { BrowserRouter } from "react-router-dom";
 import { clusterApiUrl } from "@solana/web3.js";
+
 import "@solana/wallet-adapter-react-ui/styles.css";
+import { ReceiptProvider } from "./ReceiptContext"; // ✅ Your receipt context
 
 // Use mainnet or devnet depending on your environment
 const endpoint = clusterApiUrl("mainnet-beta");
@@ -34,7 +38,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           <BrowserRouter>
-            <App />
+            <ReceiptProvider>
+              <App />
+            </ReceiptProvider>
           </BrowserRouter>
         </WalletModalProvider>
       </WalletProvider>

@@ -28,7 +28,6 @@ export default function Sidebar() {
         <button onClick={() => setShow((prev) => !prev)}>
           <FaBars className="text-white text-2xl" />
         </button>
-        <span className="text-white font-semibold text-lg"></span>
       </div>
 
       {/* Sidebar Container */}
@@ -65,6 +64,8 @@ export default function Sidebar() {
             <FaBell />
             <span>Subscription</span>
           </NavLink>
+
+          {/* Logout (links to Logout.jsx) */}
           <NavLink to="/logout" className={getNavLinkClass}>
             <FaSignOutAlt />
             <span>Logout</span>

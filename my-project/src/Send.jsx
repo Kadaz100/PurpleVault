@@ -8,13 +8,19 @@ import {
 import Papa from "papaparse";
 import { db } from "./firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useReceipts } from "./ReceiptContext";
 
 export default function Send() {
   const [recipients, setRecipients] = useState([]);
   const [manualAddress, setManualAddress] = useState("");
   const [manualAmount, setManualAmount] = useState("");
 
-  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+  const { addReceipt } = useReceipts();
+
+  const connection = new Connection(
+    "https://api.mainnet-beta.solana.com",
+    "confirmed"
+  );
 
   const totalAmount = recipients.reduce(
     (sum, r) => sum + parseFloat(r.amount || 0),
@@ -33,14 +39,17 @@ export default function Send() {
           address: row.Wallet || row.wallet || row.Address || row.address,
           amount: row.Amount || row.amount,
         }));
-        setRecipients([...recipients, ...parsed]);
+        setRecipients((prev) => [...prev, ...parsed]);
       },
     });
   };
 
   const handleManualAdd = () => {
     if (!manualAddress || !manualAmount) return;
-    setRecipients([...recipients, { address: manualAddress, amount: manualAmount }]);
+    setRecipients((prev) => [
+      ...prev,
+      { address: manualAddress, amount: manualAmount },
+    ]);
     setManualAddress("");
     setManualAmount("");
   };
@@ -67,19 +76,32 @@ export default function Send() {
           })
         );
 
-        const { signature } = await provider.signAndSendTransaction(transaction);
+        const { signature } = await provider.signAndSendTransaction(
+          transaction
+        );
         await connection.confirmTransaction(signature, "confirmed");
 
+        // ✅ Store in Firestore with extra metadata
         await addDoc(collection(db, "transactions"), {
           from: fromPubkey.toString(),
           to: r.address,
           amount: parseFloat(r.amount),
           txSignature: signature,
+          solscanLink: `https://solscan.io/tx/${signature}?cluster=mainnet`,
+          status: "confirmed",
           timestamp: serverTimestamp(),
+        });
+
+        // ✅ Add to local receipts
+        addReceipt({
+          wallet: r.address,
+          amount: parseFloat(r.amount),
+          date: new Date().toISOString(),
+          txSignature: signature,
         });
       }
 
-      alert("✅ All transactions sent and logged!");
+      alert("✅ All transactions sent and logged with details!");
       setRecipients([]);
     } catch (err) {
       console.error("❌ Transaction error:", err);
@@ -107,7 +129,7 @@ export default function Send() {
               placeholder="Wallet address"
               value={manualAddress}
               onChange={(e) => setManualAddress(e.target.value)}
-            />
+              />
             <input
               className="w-full mb-2 p-2 rounded bg-[#1A1A2E] text-white"
               placeholder="Amount (SOL)"
@@ -120,7 +142,7 @@ export default function Send() {
             >
               + Add Wallet
             </button>
-            </div>
+          </div>
         </div>
 
         {/* Recipients List */}
@@ -151,14 +173,16 @@ export default function Send() {
           <div>
             <h2 className="font-semibold mb-3">Summary</h2>
             <p className="text-sm">🧾 Total Wallets: {recipients.length}</p>
-            <p className="text-sm mb-4">💸 Total Amount: {totalAmount.toFixed(2)} SOL</p>
+            <p className="text-sm mb-4">
+              💸 Total Amount: {totalAmount.toFixed(2)} SOL
+            </p>
           </div>
           <button
             onClick={handleSendTransactions}
             disabled={recipients.length === 0}
             className="py-2 border border-purple-600 hover:bg-purple-700 text-purple-400 hover:text-white font-semibold rounded transition-all"
           >
-             Send Now
+            Send Now
           </button>
         </div>
       </div>

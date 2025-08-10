@@ -34,6 +34,7 @@ export default function ActivityTable() {
               <th className="py-2">Wallet</th>
               <th className="py-2">Amount (SOL)</th>
               <th className="py-2">Date</th>
+              <th className="py-2">Transaction</th>
             </tr>
           </thead>
           <tbody>
@@ -43,15 +44,31 @@ export default function ActivityTable() {
                   <td className="py-2 text-purple-200 truncate max-w-[200px]">
                     {activity.wallet || activity.to}
                   </td>
-                  <td className="py-2 font-medium">{parseFloat(activity.amount).toFixed(2)}</td>
+                  <td className="py-2 font-medium">
+                    {parseFloat(activity.amount).toFixed(2)}
+                  </td>
                   <td className="py-2 text-gray-400">
                     {moment(activity.timestamp?.toDate()).format("MMM D, YYYY • h:mm A")}
+                  </td>
+                  <td className="py-2">
+                    {activity.txSignature ? (
+                      <a
+                        href={`https://solscan.io/tx/${activity.txSignature}?cluster=mainnet`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-purple-400 hover:underline"
+                      >
+                        View
+                      </a>
+                    ) : (
+                      <span className="text-gray-500">N/A</span>
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="text-gray-500 text-center py-4">
+                <td colSpan="4" className="text-gray-500 text-center py-4">
                   No recent transactions found.
                 </td>
               </tr>

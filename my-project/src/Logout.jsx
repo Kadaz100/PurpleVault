@@ -1,10 +1,33 @@
-import React from 'react';
+// src/Logout.jsx
+import { useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
-  return (
-    <div className="p-6 text-white">
-      <h1 className="text-2xl font-bold">Logout Page</h1>
-      <p>You have been logged out.</p>
-    </div>
-  );
+  const { disconnect } = useWallet();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const doLogout = async () => {
+      try {
+        // Disconnect Phantom or other wallet
+        await disconnect();
+
+        // Clear any stored data
+        localStorage.clear();
+        sessionStorage.clear();
+
+        console.log("✅ User logged out successfully");
+
+        // Redirect to landing page
+        navigate("/");
+      } catch (error) {
+        console.error("❌ Error during logout:", error);
+      }
+    };
+
+    doLogout();
+  }, [disconnect, navigate]);
+
+  return null; // No UI, just process logout
 }

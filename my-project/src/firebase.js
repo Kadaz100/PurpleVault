@@ -1,18 +1,17 @@
 // src/firebase.js
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+// ✅ Pull variables from the .env file
 const firebaseConfig = {
-  apiKey: "AIzaSyDe10pvWgzcJkagUFTihPyfgUnVWWRyAUw",
-  authDomain: "purple-vault.firebaseapp.com",
-  projectId: "purple-vault",
-  storageBucket: "purple-vault.appspot.com",
-  messagingSenderId: "151760162105",
-  appId: "1:151760162105:web:1f4dd1d0ecba34127bace8",
-  measurementId: "G-VKD5LF994R"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// ✅ Prevent duplicate initialization
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
+// ✅ Initialize Firebase
+const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

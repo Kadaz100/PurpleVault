@@ -7,12 +7,13 @@ import { db } from './firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 
 // Pages
-import PurpleVault from './PurpleVault';   // Landing
-import Dashboard from './Dashboard';       // Main page
-import Send from './Send';                 // Send page
-// import Receipts from './Receipts';
-// import Transactions from './Transactions';
-// import Subscription from './Subscription';
+import PurpleVault from './PurpleVault';       // Landing
+import Dashboard from './Dashboard';           // Main page
+import Send from './Send';                     // Send page
+import Receipts from './Receipts';             // ✅ You had this commented
+import Transactions from './Transactions';     // ✅ You had this commented
+import Subscription from './Subscription';     // ✅ You had this commented
+import Logout from './Logout';               // Logout page
 
 // Layout
 import MainLayout from './MainLayout';
@@ -44,9 +45,10 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="send" element={<Send />} />
-        {/* <Route path="receipts" element={<Receipts />} />
-        <Route path="transactions" element={<Transactions />} />
-        <Route path="subscription" element={<Subscription />} /> */}
+        <Route path="receipts" element={<Receipts />} />        {/* ✅ Now active */}
+        <Route path="transactions" element={<Transactions />} />{/* ✅ Now active */}
+        <Route path="subscription" element={<Subscription />} />{/* ✅ Now active */}
+        <Route path="logout" element={<Logout />} />
       </Route>
     </Routes>
   );
