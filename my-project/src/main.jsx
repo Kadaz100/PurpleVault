@@ -19,13 +19,13 @@ import {
 } from "@solana/wallet-adapter-wallets";
 
 import { BrowserRouter } from "react-router-dom";
-import { clusterApiUrl } from "@solana/web3.js";
+
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { ReceiptProvider } from "./ReceiptContext"; // ✅ Your receipt context
 
 // Use mainnet or devnet depending on your environment
-const endpoint = clusterApiUrl("mainnet-beta");
+const endpoint = import.meta.env.VITE_SOLANA_RPC;
 
 const wallets = [
   new PhantomWalletAdapter(),
